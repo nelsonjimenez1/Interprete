@@ -1,0 +1,11 @@
+def_var x := 3.5
+def_var y := 6.2
+def_var bool := true
+while (x+1.0 < y or bool)
+   echo "estoy en while"
+   echo x
+   x := x + 1.0
+   if (x = 4.5)
+      bool := false
+   endif
+endwhile

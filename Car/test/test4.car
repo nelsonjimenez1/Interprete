@@ -1,0 +1,10 @@
+def_var x := 1
+def_var y := 10
+def_var sw := true 
+while (sw or not(x>=y) and not(true or false))
+   echo x+2*2/2+0
+   x := x + 1
+   if(x=20)
+      sw := false 
+   endif
+endwhile

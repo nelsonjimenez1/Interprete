@@ -1,0 +1,31 @@
+echo 6
+turn_rt 90.0
+move_fw 100
+turn_lt 45
+move_fw 100
+turn_lt 45
+move_fw 100
+turn_lt 45
+move_fw 100
+turn_lt 45
+move_fw 100
+turn_lt 45
+move_fw 100
+def_var x := 4
+echo x
+echo 6
+def_var y := 7
+echo y
+y := x
+echo y
+if (true)
+   echo x + 1
+endif
+
+if (false)
+   echo x + 1
+else
+   echo "hola"
+endif
+echo true
+

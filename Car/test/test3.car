@@ -1,0 +1,24 @@
+def_var rtAng
+def_var ltAng 
+rtAng := 50
+ltAng := 90-rtAng
+def_var x := 1
+while ((x<=10) and (x>0))
+   def_var y := 1
+   if (x=y)
+      def_var a := (x+y)/x
+      turn_rt rtAng
+      move_fw a
+      y:=y+2
+   else
+      def_var z := x+y/x
+      turn_rt ltAng
+      move_fw z
+   endif
+   x:=x+1
+   echo x-1
+endwhile
+def_var bool := false
+if(not(bool))
+   echo "sirve"
+endif
