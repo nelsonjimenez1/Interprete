@@ -27,7 +27,7 @@ public class Main {
 
 	private static void program(World world, Car car) {
 		try {
-			String program = "test/test." + EXTENSION;
+			String program = "test/test4." + EXTENSION;
 			System.out.println("Interpreting file " + program);
 
 			CarLexer lexer = new CarLexer(new ANTLRFileStream(program));

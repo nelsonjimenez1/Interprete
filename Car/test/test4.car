@@ -8,3 +8,6 @@ while (sw or not(x>=y) and not(true or false))
       sw := false 
    endif
 endwhile
+
+echo "hola"
+echo "hola"

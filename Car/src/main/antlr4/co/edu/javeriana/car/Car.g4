@@ -181,7 +181,8 @@ COMA: ',';
 DECIMAL: [0-9]*'.'[0-9]+;
 NUMERO: [0-9]+;
 BOOLEAN: 'true'|'false';
-STRING: '"'[A-Za-z0-9 ]*'"';
+STRING: '"'[A-Za-z0-9]*'"';
+//STRING: '"'.*'"';
 COLOR:  '#'[0-9A-Fa-f][0-9A-Fa-f][0-9A-Fa-f][0-9A-Fa-f][0-9A-Fa-f][0-9A-Fa-f];
 
 DEFV: 'def_var';
