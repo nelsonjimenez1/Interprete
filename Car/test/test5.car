@@ -1,0 +1,6 @@
+proc mi_funcion(x, y)
+   echo "hola"
+   echo x + y
+end
+
+mi_funcion(1,2)

@@ -1,4 +1,5 @@
 package co.edu.javeriana.car.ast;
+import java.util.List;
 import java.util.Map;
 
 public class Addition implements ASTNode
@@ -13,16 +14,16 @@ public class Addition implements ASTNode
 	}
 	
 	@Override
-	public Object execute(Map<String, Object> symbolTable) 
+	public Object execute(Map<String, Object> symbolTable, List <Map<String, Object>> pila, List<Object> parametros) 
 	{
 		try
 		{
-			return (double)operand1.execute(symbolTable) + (double)operand2.execute(symbolTable);
+			return (double)operand1.execute(symbolTable, pila, null) + (double)operand2.execute(symbolTable, pila, null);
 		}
 		catch (Exception e)
 		{
-			int x = (int)operand1.execute(symbolTable);
-			int y = (int)operand2.execute(symbolTable);
+			int x = (int)operand1.execute(symbolTable, pila, null);
+			int y = (int)operand2.execute(symbolTable, pila, null);
 			return x + y;
 		}		
 	}

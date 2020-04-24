@@ -1,4 +1,5 @@
 package co.edu.javeriana.car.ast;
+import java.util.List;
 import java.util.Map;
 
 public class VarDecl implements ASTNode
@@ -13,7 +14,7 @@ public class VarDecl implements ASTNode
 	}
 
 	@Override
-	public Object execute(Map<String, Object> symbolTable) 
+	public Object execute(Map<String, Object> symbolTable, List <Map<String, Object>> pila, List<Object> parametros) 
 	{
 		if (expression == null)
 		{
@@ -21,7 +22,7 @@ public class VarDecl implements ASTNode
 		}
 		else
 		{
-			symbolTable.put(name, expression.execute(symbolTable));
+			symbolTable.put(name, expression.execute(symbolTable, pila, null));
 		}
 
 		return null;

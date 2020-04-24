@@ -13,16 +13,20 @@ public class While implements ASTNode
 	}
 
 	@Override
-	public Object execute(Map<String, Object> symbolTable) 
+	public Object execute(Map<String, Object> symbolTable, List <Map<String, Object>> pila, List<Object> parametros) 
 	{
-		while ((boolean)condition.execute(symbolTable))
+		Map symbolTableP = new HashMap<String, Object>();
+		pila.add(symbolTableP);
+		
+		while ((boolean)condition.execute(symbolTableP, pila, null))
 		{
 			for (ASTNode n: body)
 			{
-				n.execute(symbolTable);
-			}		
+				n.execute(symbolTableP, pila, null);
+			}	
 		}
 		
+		pila.remove(pila.size()-1);
 		return null;
 	}
 }

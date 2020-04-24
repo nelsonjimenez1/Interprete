@@ -1,4 +1,5 @@
 package co.edu.javeriana.car.ast;
+import java.util.List;
 import java.util.Map;
 
 public class EvaluarCond implements ASTNode
@@ -15,13 +16,13 @@ public class EvaluarCond implements ASTNode
 	}
 	
 	@Override
-	public Object execute(Map<String, Object> symbolTable) 
+	public Object execute(Map<String, Object> symbolTable, List <Map<String, Object>> pila, List<Object> parametros) 
 	{
 		if (operador.equals(">"))
 		{
 			try
 			{
-				if ((double)operand1.execute(symbolTable) > (double)operand2.execute(symbolTable))
+				if ((double)operand1.execute(symbolTable, pila, null) > (double)operand2.execute(symbolTable, pila, null))
 				{
 					Object aux = true;
 					return aux;
@@ -34,7 +35,7 @@ public class EvaluarCond implements ASTNode
 			}
 			catch (Exception e)
 			{
-				if ((int)operand1.execute(symbolTable) > (int)operand2.execute(symbolTable))
+				if ((int)operand1.execute(symbolTable, pila, null) > (int)operand2.execute(symbolTable, pila, null))
 				{
 					Object aux = true;
 					return aux;
@@ -50,7 +51,7 @@ public class EvaluarCond implements ASTNode
 		{
 			try
 			{
-				if ((double)operand1.execute(symbolTable) >= (double)operand2.execute(symbolTable))
+				if ((double)operand1.execute(symbolTable, pila, null) >= (double)operand2.execute(symbolTable, pila, null))
 				{
 					Object aux = true;
 					return aux;
@@ -63,7 +64,7 @@ public class EvaluarCond implements ASTNode
 			}
 			catch (Exception e)
 			{
-				if ((int)operand1.execute(symbolTable) >= (int)operand2.execute(symbolTable))
+				if ((int)operand1.execute(symbolTable, pila, null) >= (int)operand2.execute(symbolTable, pila, null))
 				{
 					Object aux = true;
 					return aux;
@@ -79,7 +80,7 @@ public class EvaluarCond implements ASTNode
 		{
 			try
 			{
-				if ((double)operand1.execute(symbolTable) < (double)operand2.execute(symbolTable))
+				if ((double)operand1.execute(symbolTable, pila, null) < (double)operand2.execute(symbolTable, pila, null))
 				{
 					Object aux = true;
 					return aux;
@@ -92,7 +93,7 @@ public class EvaluarCond implements ASTNode
 			}
 			catch (Exception e)
 			{
-				if ((int)operand1.execute(symbolTable) < (int)operand2.execute(symbolTable))
+				if ((int)operand1.execute(symbolTable, pila, null) < (int)operand2.execute(symbolTable, pila, null))
 				{
 					Object aux = true;
 					return aux;
@@ -108,7 +109,7 @@ public class EvaluarCond implements ASTNode
 		{
 			try
 			{
-				if ((double)operand1.execute(symbolTable) <= (double)operand2.execute(symbolTable))
+				if ((double)operand1.execute(symbolTable, pila, null) <= (double)operand2.execute(symbolTable, pila, null))
 				{
 					Object aux = true;
 					return aux;
@@ -121,7 +122,7 @@ public class EvaluarCond implements ASTNode
 			}
 			catch (Exception e)
 			{
-				if ((int)operand1.execute(symbolTable) <= (int)operand2.execute(symbolTable))
+				if ((int)operand1.execute(symbolTable, pila, null) <= (int)operand2.execute(symbolTable, pila, null))
 				{
 					Object aux = true;
 					return aux;
@@ -137,7 +138,7 @@ public class EvaluarCond implements ASTNode
 		{
 			try
 			{
-				if ((double)operand1.execute(symbolTable) == (double)operand2.execute(symbolTable))
+				if ((double)operand1.execute(symbolTable, pila, null) == (double)operand2.execute(symbolTable, pila, null))
 				{
 					Object aux = true;
 					return aux;
@@ -150,7 +151,7 @@ public class EvaluarCond implements ASTNode
 			}
 			catch (Exception e)
 			{
-				if ((int)operand1.execute(symbolTable) == (int)operand2.execute(symbolTable))
+				if ((int)operand1.execute(symbolTable, pila, null) == (int)operand2.execute(symbolTable, pila, null))
 				{
 					Object aux = true;
 					return aux;
@@ -166,7 +167,7 @@ public class EvaluarCond implements ASTNode
 		{
 			try
 			{
-				if ((double)operand1.execute(symbolTable) != (double)operand2.execute(symbolTable))
+				if ((double)operand1.execute(symbolTable, pila, null) != (double)operand2.execute(symbolTable, pila, null))
 				{
 					Object aux = true;
 					return aux;
@@ -179,7 +180,7 @@ public class EvaluarCond implements ASTNode
 			}
 			catch (Exception e)
 			{
-				if ((int)operand1.execute(symbolTable) != (int)operand2.execute(symbolTable))
+				if ((int)operand1.execute(symbolTable, pila, null) != (int)operand2.execute(symbolTable, pila, null))
 				{
 					Object aux = true;
 					return aux;
@@ -193,7 +194,7 @@ public class EvaluarCond implements ASTNode
 		}
 		else if (operador.equals("&"))
 		{
-			if ((boolean)operand1.execute(symbolTable) && (boolean)operand2.execute(symbolTable))
+			if ((boolean)operand1.execute(symbolTable, pila, null) && (boolean)operand2.execute(symbolTable, pila, null))
 			{
 				Object aux = true;
 				return aux;
@@ -206,7 +207,7 @@ public class EvaluarCond implements ASTNode
 		}
 		else if (operador.equals("|"))
 		{
-			if ((boolean)operand1.execute(symbolTable) | (boolean)operand2.execute(symbolTable))
+			if ((boolean)operand1.execute(symbolTable, pila, null) | (boolean)operand2.execute(symbolTable, pila, null))
 			{
 				Object aux = true;
 				return aux;
@@ -219,7 +220,7 @@ public class EvaluarCond implements ASTNode
 		}
 		else if (operador.equals("!"))
 		{
-			if (!(boolean)operand2.execute(symbolTable))
+			if (!(boolean)operand2.execute(symbolTable, pila, null))
 			{
 				Object aux = true;
 				return aux;

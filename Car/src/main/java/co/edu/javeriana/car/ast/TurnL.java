@@ -1,4 +1,5 @@
 package co.edu.javeriana.car.ast;
+import java.util.List;
 import java.util.Map;
 import co.edu.javeriana.car.Car;
 
@@ -14,15 +15,15 @@ public class TurnL implements ASTNode
 	}
 
 	@Override
-	public Object execute(Map<String, Object> symbolTable) 
+	public Object execute(Map<String, Object> symbolTable, List <Map<String, Object>> pila, List<Object> parametros) 
 	{
 		try
 		{
-			car.left((int)data.execute(symbolTable));
+			car.left((int)data.execute(symbolTable, pila, null));
 		}
 		catch (ClassCastException e)
 		{
-			double d = (double)data.execute(symbolTable);
+			double d = (double)data.execute(symbolTable, pila, null);
 			float f = (float)d;
 			car.left(f);
 		}

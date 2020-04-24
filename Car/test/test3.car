@@ -10,6 +10,8 @@ while ((x<=10) and (x>0))
       turn_rt rtAng
       move_fw a
       y:=y+2
+      echo "hola"
+      echo y
    else
       def_var z := x+y/x
       turn_rt ltAng

@@ -7,8 +7,10 @@ grammar Car;
 @parser::members 
 {
 	private List <ASTNode> body =  new ArrayList<ASTNode>();
+	private List <ASTNode> funciones =  new ArrayList<ASTNode>();
 	private Car car;
 	private Map<String, Object> symbolTable = new HashMap<String, Object>();
+	private List <Map<String, Object>> pila = new ArrayList<>();
 
 	public CarParser(TokenStream input, Car car) 
 	{
@@ -16,56 +18,64 @@ grammar Car;
     	this.car = car;
 	}
 	
-	private int getRojo(String rgba)
-	{
-		return Integer.valueOf(rgba.substring(1,3),16);
-	}
-	private int getVerde(String rgba)
-	{
-		return Integer.valueOf(rgba.substring(3,5),16);
-	}
-	private int getAzul(String rgba)
-	{
-		return Integer.valueOf(rgba.substring(5,7),16);
-	}
+		private ASTNode buscar(String nombre)
+		{
+			for (int i = 0; i < funciones.size(); i++)
+			{
+				Funcion f = (Funcion)funciones.get(i);
+				if(nombre.equals(f.getNombre()))
+				{
+					return funciones.get(i);
+				}	
+			}
+			
+			return null;
+		}
 }
 start: (sentence{body.add($sentence.node);})* 
 	{
+		pila.add(symbolTable);
+		
 		for (ASTNode n: body)
 		{
-			n.execute(symbolTable);
+			if(!(n instanceof Funcion))
+			{
+				n.execute(symbolTable, pila, null);	
+			}
 		}
 	};
 sentence returns[ASTNode node]: movef {$node = $movef.node;} 
 	| moveb {$node = $moveb.node;}
 	| turnl {$node = $turnl.node;}
 	| turnr {$node = $turnr.node;}
-	//| set_color 
+	| set_color {$node = $set_color.node;} 
 	| defv {$node = $defv.node;}
 	| var_assing {$node = $var_assing.node;}
 	| print {$node = $print.node;}
 	| conditional {$node = $conditional.node;}
-	| forsito {$node = $forsito.node;};
-movef returns[ASTNode node]: MOVEF valor
+	| forsito {$node = $forsito.node;}
+	| procedure {$node = $procedure.node;}
+	| llamado {$node = $llamado.node;};
+movef returns[ASTNode node]: MOVEF expression
 	{
-		$node = new MoveF($valor.node, car);			
+		$node = new MoveF($expression.node, car);			
 	};
-moveb returns[ASTNode node]: MOVEB valor
+moveb returns[ASTNode node]: MOVEB expression
 	{
-		$node = new MoveB($valor.node, car);
+		$node = new MoveB($expression.node, car);
 	};
-turnl returns[ASTNode node]: TURNL valor
+turnl returns[ASTNode node]: TURNL expression
 	{
-		$node = new TurnL($valor.node, car);
+		$node = new TurnL($expression.node, car);
 	};
-turnr returns[ASTNode node]: TURNR valor
+turnr returns[ASTNode node]: TURNR expression
 	{
-		$node = new TurnR($valor.node, car);
+		$node = new TurnR($expression.node, car);
 	};
-//set_color returns[ASTNode node]: SETC COLOR valor
-	//{	
-		
-	//};
+set_color returns[ASTNode node]: SETC v1=valor COMA v2=valor
+	{	
+		$node = new Color($v2.node, car, $v1.node);
+	};
 defv returns[ASTNode node]: DEFV NOMVAR (ASSING expression)?
 	{
 		try
@@ -108,6 +118,32 @@ forsito returns[ASTNode node]: WHILE PAR_OPEN expression PAR_CLOSE
 	{
 		$node = new While($expression.node, bodyF);
 	};	
+procedure returns[ASTNode node]: PROC n1=NOMVAR 
+	PAR_OPEN {Map<String, Object> symbolTableP = new HashMap<String, Object>();}
+	(n2=NOMVAR COMA {symbolTableP.put($n2.text, new Object());})* 
+	(n3=NOMVAR {symbolTableP.put($n3.text, new Object());})? 
+	PAR_CLOSE 
+	{
+		List<ASTNode> bodyP = new ArrayList<ASTNode>();
+	}
+	(s1=sentence {bodyP.add($s1.node);})*
+	END
+	{
+		$node = new Funcion(bodyP, $n1.text, symbolTableP);
+		funciones.add($node);
+	};
+llamado returns[ASTNode node]: n1=NOMVAR 
+	{
+		ASTNode nodoF = buscar($n1.text);
+		Funcion f = (Funcion)nodoF;
+		List <ASTNode> parametros =  new ArrayList<ASTNode>();
+	}
+	PAR_OPEN (n2=expression COMA {parametros.add($n2.node);})*
+	(n3=expression {parametros.add($n3.node);})? 
+	PAR_CLOSE
+	{
+		$node =  new Llamado(f, parametros);
+	};
 expression returns [ASTNode node]:
 	t1=expressionBoolean {$node = $t1.node;}; 
 expressionBoolean returns [ASTNode node]:
@@ -134,8 +170,13 @@ valor returns[ASTNode node]:
 	NUMERO {$node = new Constant(Integer.parseInt($NUMERO.text));} 
 	| DECIMAL {$node = new Constant(Double.parseDouble($DECIMAL.text));}
 	| BOOLEAN {$node = new Constant(Boolean.parseBoolean($BOOLEAN.text));}
-	| STRING {$node = new Constant($STRING.text);}
-	//| COLOR {}
+	| STRING 
+	{
+		String s = $STRING.text;
+		String res = s.substring(1,s.length()-1);  
+		$node = new Constant(res);
+	}
+	| COLOR {$node = new Constant($COLOR.text);}
 	| NOMVAR {$node = new VarRef($NOMVAR.text);}
 	| PAR_OPEN e1=expression{$node = $e1.node;} PAR_CLOSE
 	| NOT PAR_OPEN e2=expressionBoolean{$node = new EvaluarCond($node, $e2.node,"!");} PAR_CLOSE;

@@ -1,4 +1,5 @@
 package co.edu.javeriana.car.ast;
+import java.util.List;
 import java.util.Map;
 
 public class Println implements ASTNode
@@ -11,9 +12,9 @@ public class Println implements ASTNode
 	}
 
 	@Override
-	public Object execute(Map<String, Object> symbolTable) 
+	public Object execute(Map<String, Object> symbolTable, List <Map<String, Object>> pila, List<Object> parametros) 
 	{
-		System.out.println(data.execute(symbolTable));
+		System.out.println(data.execute(symbolTable, pila, null));
 		return null;
 	}
 }

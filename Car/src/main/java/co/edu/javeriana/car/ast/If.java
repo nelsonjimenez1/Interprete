@@ -15,23 +15,27 @@ public class If implements ASTNode
 	}
 
 	@Override
-	public Object execute(Map<String, Object> symbolTable) 
+	public Object execute(Map<String, Object> symbolTable, List <Map<String, Object>> pila, List<Object> parametros) 
 	{
-		if ((boolean)condition.execute(symbolTable))
+		Map symbolTableP = new HashMap<String, Object>();
+		pila.add(symbolTableP);
+		
+		if ((boolean)condition.execute(symbolTableP, pila, null))
 		{
 			for (ASTNode n: body)
 			{
-				n.execute(symbolTable);
+				n.execute(symbolTableP, pila, null);
 			}
 		}
 		else
 		{
 			for (ASTNode n: elseBody)
 			{
-				n.execute(symbolTable);
+				n.execute(symbolTableP, pila, null);
 			}
 		}
 		
+		pila.remove(pila.size()-1);
 		return null;
 	}
 }

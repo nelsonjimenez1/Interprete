@@ -1,0 +1,29 @@
+def_var x := 1 
+def_var y := x
+def_var c := "#ff0000"
+set_rgba #0000ff, 1
+move_fw x + 100
+set_rgba c, 1
+move_fw x + 100
+
+proc mi_funcion(x)
+   def_var z := 1
+   echo "hola"
+   echo x + y + z
+end
+
+if (x=y)
+   def_var x := 5
+   echo x + y
+   
+   if (true)
+      def_var x:= 6
+      x := x + 1 
+      echo x + y	
+      mi_funcion(x+1)
+      mi_funcion(y)	
+   endif
+endif
+
+mi_funcion(y)
+echo x
